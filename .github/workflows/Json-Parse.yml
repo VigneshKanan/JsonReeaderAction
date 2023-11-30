@@ -2,8 +2,6 @@ name: Snyk Vulnerability Analysis
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   analyze-snyk-vulnerabilities:
@@ -15,7 +13,7 @@ jobs:
 
     - name: Read and Extract Snyk Vulnerabilities
       run: |
-        JSON_FILE_PATH="$(pwd)/your-file.json"
+        JSON_FILE_PATH="$(pwd)/bom-result.json"
 
         # Extract data
         TOTAL_ISSUES=$(jq -r '.data.attributes.test_summary.total_issues' "$JSON_FILE_PATH")
