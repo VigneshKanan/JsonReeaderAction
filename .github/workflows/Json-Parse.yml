@@ -24,5 +24,9 @@ jobs:
         # Extract the key containing vulnerability values
         VULNERABILITY_KEY=$(jq -r '.data.attributes.vulnerabilities_by_severity' "$JSON_FILE_PATH")
 
-        # Print the extracted value
-        echo "Extracted Vulnerabilities: $VULNERABILITY_KEY"
+        # Check if the key exists and is not null
+        if [ "$VULNERABILITY_KEY" != "null" ]; then
+          echo "Extracted Vulnerabilities: $VULNERABILITY_KEY"
+        else
+          echo "No vulnerabilities found or key is null."
+        fi
