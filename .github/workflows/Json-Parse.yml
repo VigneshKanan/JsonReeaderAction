@@ -21,13 +21,11 @@ jobs:
         # echo "Contents of $JSON_FILE_PATH:"
         # cat "$JSON_FILE_PATH"
 
-        # Extract the key containing vulnerability values
-        VULNERABILITY_KEY=$(jq -r '.data.vulnerabilities' "$JSON_FILE_PATH")
-        echo "Contents of $VULNERABILITY_KEY"
+        # Extract affected packages ids
+        AFFECTED_PKGS_IDS=$(jq -r '.relationships.affected_pkgs.data[].id' "$JSON_FILE_PATH")
 
-        # Check if the key exists and is not null
-        if [ "$VULNERABILITY_KEY" != "null" ]; then
-          echo "Extracted Vulnerabilities: $VULNERABILITY_KEY"
-        else
-          echo "No vulnerabilities found or key is null."
-        fi
+        # Extract vulnerabilities ids
+        VULNERABILITIES_IDS=$(jq -r '.relationships.vulnerabilities.data[].id' "$JSON_FILE_PATH")
+
+        echo "Affected Packages IDs: $AFFECTED_PKGS_IDS"
+        echo "Vulnerabilities IDs: $VULNERABILITIES_IDS"
