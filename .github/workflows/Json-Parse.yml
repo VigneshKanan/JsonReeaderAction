@@ -21,7 +21,7 @@ jobs:
         VULNERABILITIES_BY_SEVERITY=$(jq -c '.data.attributes.test_summary.vulnerabilities_by_severity' "$JSON_FILE_PATH")
 
         # Extract affected packages ids
-        AFFECTED_PKGS_IDS=$(jq -r '.data.relationships.affected_pkgs.data' "$JSON_FILE_PATH")
+        AFFECTED_PKGS_IDS=$(jq -c '.data.relationships.affected_pkgs.data' "$JSON_FILE_PATH")
 
         # Extract vulnerabilities ids
         VULNERABILITIES_IDS=$(jq -c '.data.relationships.vulnerabilities.data' "$JSON_FILE_PATH")
