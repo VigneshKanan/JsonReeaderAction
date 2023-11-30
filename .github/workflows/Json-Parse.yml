@@ -18,11 +18,12 @@ jobs:
         JSON_FILE_PATH="$(pwd)/bom-result.json"
 
         # Print the content of the JSON file
-        echo "Contents of $JSON_FILE_PATH:"
-        cat "$JSON_FILE_PATH"
+        # echo "Contents of $JSON_FILE_PATH:"
+        # cat "$JSON_FILE_PATH"
 
         # Extract the key containing vulnerability values
         VULNERABILITY_KEY=$(jq -r '.data.vulnerabilities' "$JSON_FILE_PATH")
+        echo "Contents of $VULNERABILITY_KEY"
 
         # Check if the key exists and is not null
         if [ "$VULNERABILITY_KEY" != "null" ]; then
