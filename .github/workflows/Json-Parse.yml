@@ -1,0 +1,22 @@
+name: Snyk Vulnerability Analysis
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  analyze-snyk-vulnerabilities:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Read and Extract Snyk Vulnerabilities
+      run: |
+        JSON_FILE_PATH="./bom-result.json"
+        
+        VULNERABILITY_KEY=$(jq -r '.data.attributes.vulnerabilities_by_severity' "$JSON_FILE_PATH")
+
+        echo "Extracted Vulnerabilities: $VULNERABILITY_KEY"
