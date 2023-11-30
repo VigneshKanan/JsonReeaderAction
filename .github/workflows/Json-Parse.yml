@@ -22,7 +22,7 @@ jobs:
         cat "$JSON_FILE_PATH"
 
         # Extract the key containing vulnerability values
-        VULNERABILITY_KEY=$(jq -r '.data.attributes.vulnerabilities_by_severity' "$JSON_FILE_PATH")
+        VULNERABILITY_KEY=$(jq -r '.data.vulnerabilities' "$JSON_FILE_PATH")
 
         # Check if the key exists and is not null
         if [ "$VULNERABILITY_KEY" != "null" ]; then
