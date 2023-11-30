@@ -16,7 +16,7 @@ jobs:
     - name: Read and Extract Snyk Vulnerabilities
       run: |
         ls -ltr
-        JSON_FILE_PATH="./bom-result.json"
+        JSON_FILE_PATH="bom-result.json"
         cat JSON_FILE_PATH
         VULNERABILITY_KEY=$(jq -r '.data.attributes.vulnerabilities_by_severity' "$JSON_FILE_PATH")
 
