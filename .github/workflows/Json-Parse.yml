@@ -15,17 +15,27 @@ jobs:
 
     - name: Read and Extract Snyk Vulnerabilities
       run: |
-        JSON_FILE_PATH="$(pwd)/bom-result.json"
+        JSON_FILE_PATH="$(pwd)/your-file.json"
 
-        # Print the content of the JSON file
-        # echo "Contents of $JSON_FILE_PATH:"
-        # cat "$JSON_FILE_PATH"
+        # Extract data
+        TOTAL_ISSUES=$(jq -r '.data.attributes.test_summary.total_issues' "$JSON_FILE_PATH")
+        TOTAL_VULNERABILITIES=$(jq -r '.data.attributes.test_summary.total_vulnerabilities' "$JSON_FILE_PATH")
+        VULNERABILITIES_BY_SEVERITY=$(jq -c '.data.attributes.test_summary.vulnerabilities_by_severity' "$JSON_FILE_PATH")
 
         # Extract affected packages ids
-        AFFECTED_PKGS_IDS=$(jq -r '.data.relationships.affected_pkgs.data[].id' "$JSON_FILE_PATH")
+        AFFECTED_PKGS_IDS=$(jq -c '.relationships.affected_pkgs.data' "$JSON_FILE_PATH")
 
         # Extract vulnerabilities ids
-        VULNERABILITIES_IDS=$(jq -r '.data.relationships.vulnerabilities.data[].id' "$JSON_FILE_PATH")
+        VULNERABILITIES_IDS=$(jq -c '.relationships.vulnerabilities.data' "$JSON_FILE_PATH")
 
-        echo "Affected Packages IDs: $AFFECTED_PKGS_IDS"
-        echo "Vulnerabilities IDs: $VULNERABILITIES_IDS"
+        # Create a JSON object
+        RESULT_JSON=$(jq -n \
+          --arg totalIssues "$TOTAL_ISSUES" \
+          --arg totalVulnerabilities "$TOTAL_VULNERABILITIES" \
+          --argjson vulnerabilitiesBySeverity "$VULNERABILITIES_BY_SEVERITY" \
+          --argjson affectedPackages "$AFFECTED_PKGS_IDS" \
+          --argjson vulnerabilities "$VULNERABILITIES_IDS" \
+          '{"total_issues": $totalIssues, "total_vulnerabilities": $totalVulnerabilities, "vulnerabilities_by_severity": $vulnerabilitiesBySeverity, "affected_packages": $affectedPackages, "vulnerabilities": $vulnerabilities}'
+        )
+
+        echo "$RESULT_JSON"
