@@ -13,7 +13,6 @@ jobs:
 
     - name: Read and Extract Snyk Vulnerabilities
       run: |
-      
         JSON_FILE_PATH="$(pwd)/bom-result.json"
 
         # Extract data
